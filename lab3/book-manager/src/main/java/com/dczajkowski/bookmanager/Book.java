@@ -8,7 +8,6 @@ public class Book implements Cloneable {
     private int price;
     private Currency currency;
     private int pages;
-    private boolean selected = false;
 
     public Book(int id, String title, String author, Genre genre, int price, Currency currency, int pages) {
         this.id = id;
@@ -70,10 +69,6 @@ public class Book implements Cloneable {
         return new CurrencyConverter(price, this.currency).to(currency);
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public Currency getCurrency() {
         return currency;
     }
@@ -96,13 +91,5 @@ public class Book implements Cloneable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 }

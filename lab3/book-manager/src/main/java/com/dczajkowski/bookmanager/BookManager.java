@@ -4,7 +4,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.dczajkowski.helpers.Helpers.tap;
 
@@ -79,10 +78,6 @@ public class BookManager {
     public List<Genre> getAllGenres() {
         return allGenres;
     }
-
-    // private Stream<Book> getSelectedBooks() {
-    //     return getBooks().stream().filter(Book::isSelected);
-    // }
 
     public long getSelectedBooksAmount() {
         return getSelectedBooks().values().stream().filter(bool -> bool).count();
