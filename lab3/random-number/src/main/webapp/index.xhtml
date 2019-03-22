@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+    <h:body>
+        <h1>Pick a number: (#{NumberGenerator.number} is winning)</h1>
+
+        <h:form><h:commandButton value="(1)" action="#{NumberGenerator.send(1)}" /></h:form>
+        <h:form><h:commandButton value="(2)" action="#{NumberGenerator.send(2)}" /></h:form>
+        <h:form><h:commandButton value="(3)" action="#{NumberGenerator.send(3)}" /></h:form>
+        <h:form><h:commandButton value="(4)" action="#{NumberGenerator.send(4)}" /></h:form>
+        <h:form><h:commandButton value="(5)" action="#{NumberGenerator.send(5)}" /></h:form>
+    </h:body>
+</html>
