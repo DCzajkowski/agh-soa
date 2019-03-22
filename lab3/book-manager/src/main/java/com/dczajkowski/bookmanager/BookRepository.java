@@ -12,8 +12,8 @@ import static com.dczajkowski.helpers.Helpers.tap;
 public class BookRepository {
     public List<Book> get() {
         return tap(new ArrayList<>(), list -> {
-            list.add(new Book("Pan Tadeusz", "Adam Mickiewicz", Genre.DRAMA, 2300, Currency.PLN, 300));
-            list.add(new Book("1984", "George Orwell", Genre.SCIENCE_FICTION, 1000, Currency.EUR, 320));
+            list.add(new Book(1, "Pan Tadeusz", "Adam Mickiewicz", Genre.DRAMA, 2300, Currency.PLN, 300));
+            list.add(new Book(2, "1984", "George Orwell", Genre.SCIENCE_FICTION, 1000, Currency.EUR, 320));
         });
     }
 }

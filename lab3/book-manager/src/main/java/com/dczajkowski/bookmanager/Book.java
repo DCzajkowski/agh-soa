@@ -1,14 +1,17 @@
 package com.dczajkowski.bookmanager;
 
 public class Book implements Cloneable {
+    private int id;
     private String title;
     private String author;
     private Genre genre;
     private int price;
     private Currency currency;
     private int pages;
+    private boolean selected = false;
 
-    public Book(String title, String author, Genre genre, int price, Currency currency, int pages) {
+    public Book(int id, String title, String author, Genre genre, int price, Currency currency, int pages) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
@@ -18,6 +21,7 @@ public class Book implements Cloneable {
     }
 
     public Book(Book book) {
+        this.id = book.id;
         this.title = book.title;
         this.author = book.author;
         this.genre = book.genre;
@@ -59,7 +63,11 @@ public class Book implements Cloneable {
     }
 
     public String getPriceFormattedInCurrency(Currency currency) {
-        return String.format("%.2f", (double) new CurrencyConverter(price, this.currency).to(currency) / 100);
+        return String.format("%.2f", (double) getPriceInCurrency(currency) / 100);
+    }
+
+    public int getPriceInCurrency(Currency currency) {
+        return new CurrencyConverter(price, this.currency).to(currency);
     }
 
     public void setPrice(int price) {
@@ -80,5 +88,21 @@ public class Book implements Cloneable {
 
     public void setPages(int pages) {
         this.pages = pages;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

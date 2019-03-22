@@ -37,40 +37,61 @@
 
                     <f:ajax event="change" render="booksTable" />
                 </h:selectOneMenu>
+
+                <h:outputLabel for="displayedGenres">
+                    Displayed categories:
+                    <h:selectManyMenu id="displayedGenres" value="#{BookManager.displayedGenres}" style="height: 500px;">
+                        <!--<f:selectItem itemLabel="Select categories to be hidden" />-->
+                        <f:selectItems value="#{BookManager.allGenres}" var="genre" itemLabel="#{genre}" />
+
+                        <f:ajax event="change" render="booksTable" />
+                    </h:selectManyMenu>
+                </h:outputLabel>
             </h:form>
 
-            <h:dataTable
-                value="#{BookManager.books}"
-                var="book"
-                id="booksTable"
-            >
-                <h:column>
-                    <f:facet name="header">Title</f:facet>
-                    <h:outputText value="#{book.title}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Author</f:facet>
-                    <h:outputText value="#{book.author}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Genre</f:facet>
-                    <h:outputText value="#{book.genre}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Price</f:facet>
-                    <h:outputText value="#{book.priceFormatted}" rendered="#{BookManager.currency == 'ORIGINAL'}" />
-                    <h:outputText value="#{book.getPriceFormattedInCurrency(BookManager.currencyEnum)}" rendered="#{BookManager.currency != 'ORIGINAL'}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Currency</f:facet>
-                    <h:outputText value="#{book.currency}" rendered="#{BookManager.currency == 'ORIGINAL'}" />
-                    <h:outputText value="#{BookManager.currency}" rendered="#{BookManager.currency != 'ORIGINAL'}" />
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Pages</f:facet>
-                    <h:outputText value="#{book.pages}" />
-                </h:column>
-            </h:dataTable>
+            <h:form id="booksTable">
+                <h:dataTable
+                    value="#{BookManager.books}"
+                    var="book"
+                >
+                    <h:column>
+                        <h:selectBooleanCheckbox value="#{BookManager.selectedBooks[book.id]}">
+                            <f:ajax event="change" render="summaryBookAmount summaryBookPriceTotal" />
+                        </h:selectBooleanCheckbox>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{book.title}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Author</f:facet>
+                        <h:outputText value="#{book.author}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Genre</f:facet>
+                        <h:outputText value="#{book.genre}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Price</f:facet>
+                        <h:outputText value="#{book.priceFormatted}" rendered="#{BookManager.currency == 'ORIGINAL'}" />
+                        <h:outputText value="#{book.getPriceFormattedInCurrency(BookManager.currencyEnum)}" rendered="#{BookManager.currency != 'ORIGINAL'}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Currency</f:facet>
+                        <h:outputText value="#{book.currency}" rendered="#{BookManager.currency == 'ORIGINAL'}" />
+                        <h:outputText value="#{BookManager.currency}" rendered="#{BookManager.currency != 'ORIGINAL'}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Pages</f:facet>
+                        <h:outputText value="#{book.pages}" />
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+
+            <div>
+                Selected books amount: <h:outputText id="summaryBookAmount" value="#{BookManager.selectedBooksAmount}" />
+                Amount in PLN: <h:outputText id="summaryBookPriceTotal" value="#{BookManager.selectedBooksPriceTotalFormatted}" />
+            </div>
         </div>
     </h:body>
 </html>

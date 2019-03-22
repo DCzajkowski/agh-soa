@@ -2,27 +2,29 @@ package com.dczajkowski.bookmanager;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.dczajkowski.helpers.Helpers.tap;
 
 @Named("BookManager")
 @ApplicationScoped
 public class BookManager {
-    private List<Book> books;
-    private BookRepository bookRepository = new BookRepository();
+    private List<Book> books = new BookRepository().get();
+    private Map<Integer, Boolean> selectedBooks = tap(new HashMap<>(), hm -> this.books.forEach(book -> hm.put(book.getId(), false)));
     private String currency = "ORIGINAL";
     private Integer priceFrom = null;
     private Integer priceTo = null;
     private Currency filterCurrency;
-
-    public BookManager() {
-        this.books = bookRepository.get();
-    }
+    private List<Genre> displayedGenres = new ArrayList<>(Arrays.asList(Genre.values()));
+    private final List<Genre> allGenres = new ArrayList<>(Arrays.asList(Genre.values()));
 
     public List<Book> getBooks() {
         return new BooksList(books.stream().map(Book::new).collect(Collectors.toList()))
-            .filterByPriceRange(priceFrom, priceTo)
+            .filterByPriceRange(priceFrom, priceTo, currency)
             .filterByCurrency(filterCurrency)
+            .filterByGenre(displayedGenres)
             .get();
     }
 
@@ -64,5 +66,46 @@ public class BookManager {
 
     public void setFilterCurrency(Currency filterCurrency) {
         this.filterCurrency = filterCurrency;
+    }
+
+    public List<Genre> getDisplayedGenres() {
+        return displayedGenres;
+    }
+
+    public void setDisplayedGenres(List<Genre> displayedGenres) {
+        this.displayedGenres = displayedGenres;
+    }
+
+    public List<Genre> getAllGenres() {
+        return allGenres;
+    }
+
+    // private Stream<Book> getSelectedBooks() {
+    //     return getBooks().stream().filter(Book::isSelected);
+    // }
+
+    public long getSelectedBooksAmount() {
+        return getSelectedBooks().values().stream().filter(bool -> bool).count();
+    }
+
+    public int getSelectedBooksPriceTotal() {
+        return getSelectedBooks()
+            .entrySet()
+            .stream()
+            .filter(Map.Entry::getValue).map(Map.Entry::getKey)
+            .mapToInt(id -> getBooks().stream().filter(book -> book.getId() == id).findFirst().orElse(null).getPriceInCurrency(Currency.PLN))
+            .sum();
+    }
+
+    public String getSelectedBooksPriceTotalFormatted() {
+        return String.format("%.2f", (double) getSelectedBooksPriceTotal() / 100);
+    }
+
+    public Map<Integer, Boolean> getSelectedBooks() {
+        return selectedBooks;
+    }
+
+    public void setSelectedBooks(Map<Integer, Boolean> selectedBooks) {
+        this.selectedBooks = selectedBooks;
     }
 }
