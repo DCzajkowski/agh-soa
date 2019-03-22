@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+    <h:body>
+        <h1>Check your luck</h1>
+        <h:form>
+            <h:outputLabel>Give your data:</h:outputLabel>
+            <label>Pesel: <h:inputText value="#{Lottery.pesel}" /></label>
+            <label>Name: <h:inputText value="#{Lottery.name}" /></label>
+            <label>Age: <h:inputText value="#{Lottery.age}" /></label>
+
+            <h:commandButton value="Send" action="#{Lottery.send}" />
+        </h:form>
+    </h:body>
+</html>
