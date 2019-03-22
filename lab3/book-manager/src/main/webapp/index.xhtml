@@ -15,6 +15,28 @@
 
                     <f:ajax event="change" render="booksTable" />
                 </h:selectOneMenu>
+
+                <h:outputLabel for="priceFrom">
+                    Price From:
+                    <h:inputText value="#{BookManager.priceFrom}" id="priceFrom">
+                        <f:ajax event="blur" render="booksTable" />
+                    </h:inputText>
+                </h:outputLabel>
+
+                <h:outputLabel for="priceTo">
+                    Price To:
+                    <h:inputText value="#{BookManager.priceTo}" id="priceTo">
+                        <f:ajax event="blur" render="booksTable" />
+                    </h:inputText>
+                </h:outputLabel>
+
+                <h:selectOneMenu value="#{BookManager.filterCurrency}">
+                    <f:selectItem itemLabel="Select currency" />
+                    <f:selectItem itemValue="PLN" itemLabel="PLN" />
+                    <f:selectItem itemValue="EUR" itemLabel="EUR" />
+
+                    <f:ajax event="change" render="booksTable" />
+                </h:selectOneMenu>
             </h:form>
 
             <h:dataTable
@@ -36,11 +58,13 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Price</f:facet>
-                    <h:outputText value="#{book.priceFormatted}" />
+                    <h:outputText value="#{book.priceFormatted}" rendered="#{BookManager.currency == 'ORIGINAL'}" />
+                    <h:outputText value="#{book.getPriceFormattedInCurrency(BookManager.currencyEnum)}" rendered="#{BookManager.currency != 'ORIGINAL'}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">Currency</f:facet>
-                    <h:outputText value="#{book.currency}" />
+                    <h:outputText value="#{book.currency}" rendered="#{BookManager.currency == 'ORIGINAL'}" />
+                    <h:outputText value="#{BookManager.currency}" rendered="#{BookManager.currency != 'ORIGINAL'}" />
                 </h:column>
                 <h:column>
                     <f:facet name="header">Pages</f:facet>

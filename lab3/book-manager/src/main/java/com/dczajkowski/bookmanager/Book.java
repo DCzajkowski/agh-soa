@@ -58,6 +58,10 @@ public class Book implements Cloneable {
         return String.format("%.2f", (double) price / 100);
     }
 
+    public String getPriceFormattedInCurrency(Currency currency) {
+        return String.format("%.2f", (double) new CurrencyConverter(price, this.currency).to(currency) / 100);
+    }
+
     public void setPrice(int price) {
         this.price = price;
     }
