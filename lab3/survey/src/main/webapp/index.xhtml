@@ -35,10 +35,10 @@
                     </label>
                     <label>
                         Email:
-                        <h:inputText id="emailField" value="#{Survey.email}">
+                        <h:inputText id="emailField" value="#{Survey.email}" validatorMessage="Please provide a valid email address">
                             <f:validateRequired />
                             <f:validateLength minimum="6" />
-                            <f:validateRegex pattern="\w+\@\w+\.\w+" message="Please provide a valid email address" />
+                            <f:validateRegex pattern="\w+\@\w+\.\w+" />
 
                             <f:ajax event="blur" render="emailMessage" />
                         </h:inputText>
