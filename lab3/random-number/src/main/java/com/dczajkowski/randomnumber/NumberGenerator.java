@@ -1,11 +1,13 @@
+package com.dczajkowski.randomnumber;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static Helpers.Helpers.sif;
-import static Helpers.Helpers.tap;
+import static com.dczajkowski.helpers.Helpers.sif;
+import static com.dczajkowski.helpers.Helpers.tap;
 
 @Named("NumberGenerator")
 @ApplicationScoped
@@ -22,11 +24,7 @@ public class NumberGenerator {
     }
 
     private void incrementViewCount(Integer i) {
-        System.out.print("i >> ");
-        System.out.println(i);
         viewCounter.put(i, viewCounter.getOrDefault(i, 0) + 1);
-        System.out.print("i >>> ");
-        System.out.println(viewCounter.get(i));
     }
 
     public int getViewCountFor(Integer i) {

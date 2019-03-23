@@ -18,7 +18,6 @@ public class CurrencyConverter {
         this.fromCurrency = fromCurrency;
     }
 
-
     public int to(Currency toCurrency) {
         return (int) (this.cost / rates.get(fromCurrency) * rates.get(toCurrency));
     }
