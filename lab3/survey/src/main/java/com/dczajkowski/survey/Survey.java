@@ -1,16 +1,23 @@
 package com.dczajkowski.survey;
 
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Named("Survey")
 @SessionScoped
 public class Survey implements Serializable {
     private int page = 1;
+    private List<Ad> ads = Arrays.asList(
+        new Ad("Buy a laptop", "https://laptop.com"),
+        new Ad("Buy a car", "https://car.com")
+    );
 
     // All
     private String name;
@@ -213,5 +220,13 @@ public class Survey implements Serializable {
 
     public void setFavouriteTypes(List<String> favouriteTypes) {
         this.favouriteTypes = favouriteTypes;
+    }
+
+    public Ad getRandomAd() {
+        return ads.get(new Random().nextInt(ads.size()));
+    }
+
+    public void openAd(Ad ad) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect(ad.withIncrementedClickCount().getLink());
     }
 }
