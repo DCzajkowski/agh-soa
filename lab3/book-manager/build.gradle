@@ -10,6 +10,10 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+
+    maven {
+        url 'http://nexus.airly.eu/repository/maven-releases'
+    }
 }
 
 dependencies {
@@ -17,4 +21,5 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'org.glassfish', name: 'javax.faces', version: '2.3.0'
     compile group: 'javax.enterprise', name: 'cdi-api', version: '2.0.SP1'
+    compile group: 'com.dczajkowski', name: 'helpers', version: '1.1.0-RC1'
 }
