@@ -20,6 +20,10 @@ public class Ad {
         return link;
     }
 
+    public int getClicked() {
+        return clicked;
+    }
+
     public Ad withIncrementedClickCount() {
         return tap(this, t -> clicked += 1);
     }

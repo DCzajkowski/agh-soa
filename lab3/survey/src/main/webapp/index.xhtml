@@ -9,232 +9,331 @@
 >
     <h:head>
         <style type="text/css">
-            label {
-                display: block;
+            * {
+                font-family: Lato, Helvetica, sans-serif;
             }
-
+            input:not([type="radio"]), select {
+                padding: .75rem 1rem;
+                border-radius: 5px;
+                font-size: 1rem;
+                border: 1px solid #F1F5F8;
+                color: #22292F;
+                -webkit-appearance: none;
+                background: #F1F5F8;
+                flex: 1;
+            }
+            select {
+                padding-right: 2rem;
+                position: relative;
+                display: block;
+                width: 100%;
+            }
+            input[type="text"]:focus, select:focus {
+                background: #FFFFFF;
+                border-color: #B8C2CC;
+            }
+            select + div {
+                position: absolute;
+                width: 2rem;
+                height: 100%;
+                top: 0;
+                right: 0;
+                content: "";
+                pointer-events: none;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #22292F;
+            }
+            select:not([multiple]) + div > img {
+                display: block;
+                width: 1.25rem;
+            }
+            select[multiple] + div {
+                display: none;
+            }
+            *:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(52, 144, 220, 0.5);
+            }
             select[multiple] {
                 height: 70px;
                 width: 110px;
             }
+            label {
+                display: flex;
+                margin-bottom: 1rem;
+                align-items: center;
+            }
+            .container {
+                width: 800px;
+                margin: 0 auto;
+            }
+            label > span:first-child {
+                width: 100px;
+                margin-right: 2rem;
+            }
+            .input-wrapper {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                margin-left: 1rem;
+            }
+            .input-wrapper > span {
+                color: red;
+            }
+            a {
+                color: cornflowerblue;
+                text-decoration: none;
+            }
+            .w-100 {
+                width: 100% !important;
+            }
         </style>
     </h:head>
     <h:body>
-        <div>
-            <h1>
-                <h:form>
-                    <c:set var="ad" scope="request" value="#{Survey.randomAd}" />
+        <h:form class="container">
+            <div>
+                <c:set var="ad" scope="request" value="#{Survey.randomAd}" />
+                <h1><h:commandLink value="#{ad.text}" action="#{Survey.openAd(ad)}" /></h1>
+                <span>This ad has been clicked <h:outputText value="#{ad.clicked}"/> times.</span>
+            </div>
+        </h:form>
 
-                    <h:commandLink value="#{ad.text}" action="#{Survey.openAd(ad)}" />
-                </h:form>
-            </h1>
-        </div>
-
-        <h:panelGroup layout="block" id="app">
-            <h1>Survey</h1>
+        <h:panelGroup class="container" layout="block" id="app">
             <h:panelGroup layout="block" rendered="#{Survey.page == 1}">
                 <h:form>
+                    <h1>Survey</h1>
                     <label>
-                        Name:
-                        <h:inputText id="nameField" value="#{Survey.name}">
-                            <f:validateRequired />
-                            <f:validateLength minimum="3" />
-                            <f:ajax event="blur" render="nameMessage" />
-                        </h:inputText>
+                        <span>Name:</span>
+                        <span class="input-wrapper">
+                            <h:inputText id="nameField" value="#{Survey.name}" label="Name">
+                                <f:validateRequired />
+                                <f:validateLength minimum="3" />
+                                <f:ajax event="blur" render="nameMessage" />
+                            </h:inputText>
 
-                        <h:message id="nameMessage" for="nameField" />
+                            <h:message id="nameMessage" for="nameField" />
+                        </span>
                     </label>
                     <label>
-                        Email:
-                        <h:inputText id="emailField" value="#{Survey.email}" validatorMessage="Please provide a valid email address">
-                            <f:validateRequired />
-                            <f:validateLength minimum="6" />
-                            <f:validateRegex pattern="\w+\@\w+\.\w+" />
+                        <span>Email:</span>
+                        <span class="input-wrapper">
+                            <h:inputText id="emailField" value="#{Survey.email}" validatorMessage="Please provide a valid email address" label="Email">
+                                <f:validateRequired />
+                                <f:validateLength minimum="6" />
+                                <f:validateRegex pattern="\w+\@\w+\.\w+" />
 
-                            <f:ajax event="blur" render="emailMessage" />
-                        </h:inputText>
-                        <h:message id="emailMessage" for="emailField" />
+                                <f:ajax event="blur" render="emailMessage" />
+                            </h:inputText>
+                            <h:message id="emailMessage" for="emailField" />
+                        </span>
                     </label>
                     <label>
-                        Age:
-                        <h:inputText id="ageField" value="#{Survey.age}">
-                            <f:validateRequired />
-                            <f:validateLongRange minimum="10" maximum="100" />
+                        <span>Age:</span>
+                        <span class="input-wrapper">
+                            <h:inputText id="ageField" value="#{Survey.age}" label="Age">
+                                <f:validateRequired />
+                                <f:validateLongRange minimum="10" maximum="100" />
 
-                            <f:ajax event="blur" render="ageMessage" />
-                        </h:inputText>
-                        <h:message id="ageMessage" for="ageField" />
+                                <f:ajax event="blur" render="ageMessage" />
+                            </h:inputText>
+                            <h:message id="ageMessage" for="ageField" />
+                        </span>
                     </label>
                     <label>
-                        Sex:
-                        <h:selectOneRadio value="#{Survey.sex}">
-                            <f:validateRequired />
-                            <f:selectItems value="#{Survey.availableSexes}" var="sex" itemLabel="#{sex}" />
+                        <span>Sex:</span>
+                        <span class="input-wrapper">
+                            <h:selectOneRadio id="sexField" value="#{Survey.sex}" label="Sex">
+                                <f:validateRequired />
+                                <f:selectItems value="#{Survey.availableSexes}" var="sex" itemLabel="#{sex}" />
 
-                            <f:ajax event="change" render="sexDependent heightField" />
-                        </h:selectOneRadio>
+                                <f:ajax event="change" render="sexDependent heightField" />
+                            </h:selectOneRadio>
+                            <h:message id="sexMessage" for="sexField" />
+                        </span>
                     </label>
                     <label>
-                        Education:
-                        <h:selectOneMenu id="educationField" value="#{Survey.education}">
-                            <f:selectItem itemLabel="Pick your education level" />
-                            <f:selectItems value="#{Survey.availableEducationLevels}" var="education" itemLabel="#{education}" />
+                        <span>Education:</span>
+                        <span class="input-wrapper">
+                            <h:selectOneMenu id="educationField" value="#{Survey.education}" label="Education">
+                                <f:selectItem itemLabel="Pick your education level" />
+                                <f:selectItems value="#{Survey.availableEducationLevels}" var="education" itemLabel="#{education}" />
 
-                            <f:validateRequired />
-                            <f:ajax event="blur" render="educationMessage" />
-                        </h:selectOneMenu>
-                        <h:message id="educationMessage" for="educationField" />
+                                <f:validateRequired />
+                                <f:ajax event="blur" render="educationMessage" />
+                            </h:selectOneMenu>
+                            <h:message id="educationMessage" for="educationField" />
+                        </span>
                     </label>
                     <h:outputLabel for="heightField">
-                        Height:
-                        <h:inputText id="heightField" value="#{Survey.height}">
-                            <f:validateRequired />
-                            <f:validateLongRange minimum="#{Survey.minimumHeight}" maximum="#{Survey.maximumHeight}" />
+                        <span>Height:</span>
+                        <span class="input-wrapper">
+                            <h:inputText id="heightField" value="#{Survey.height}" label="Height">
+                                <f:validateRequired />
+                                <f:validateLongRange minimum="#{Survey.minimumHeight}" maximum="#{Survey.maximumHeight}" />
 
-                            <f:ajax event="blur" render="heightMessage" />
-                        </h:inputText>
-                        <h:message id="heightMessage" for="heightField" />
+                                <f:ajax event="blur" render="heightMessage" />
+                            </h:inputText>
+                            <h:message id="heightMessage" for="heightField" />
+                        </span>
                     </h:outputLabel>
-
                     <h:panelGroup layout="block" id="sexDependent">
                         <h:panelGroup layout="block" rendered="#{Survey.isFemale}">
                             <label>
-                                Bust Size:
-                                <h:inputText id="bustSizeField" value="#{Survey.bustSize}" >
-                                    <f:validateRequired />
-                                    <f:validateLongRange />
+                                <span>Bust Size:</span>
+                                <span class="input-wrapper">
+                                    <h:inputText id="bustSizeField" value="#{Survey.bustSize}"  label="Bust Size">
+                                        <f:validateRequired />
+                                        <f:validateLongRange />
 
-                                    <f:ajax event="blur" render="bustSizeMessage" />
-                                </h:inputText>
-                                <h:message id="bustSizeMessage" for="bustSizeField" />
+                                        <f:ajax event="blur" render="bustSizeMessage" />
+                                    </h:inputText>
+                                    <h:message id="bustSizeMessage" for="bustSizeField" />
+                                </span>
                             </label>
                             <label>
-                                Bra Size:
-                                <h:selectOneMenu id="braSizeField" value="#{Survey.braSize}">
-                                    <f:selectItem itemLabel="Pick your bra size" />
-                                    <f:selectItems value="#{Survey.availableBraSizes}" var="braSize" itemLabel="#{braSize}" />
+                                <span>Bra Size:</span>
+                                <span class="input-wrapper">
+                                    <h:selectOneMenu id="braSizeField" value="#{Survey.braSize}" label="Bra Size">
+                                        <f:selectItem itemLabel="Pick your bra size" />
+                                        <f:selectItems value="#{Survey.availableBraSizes}" var="braSize" itemLabel="#{braSize}" />
 
-                                    <f:validateRequired />
+                                        <f:validateRequired />
 
-                                    <f:ajax event="blur" render="braSizeMessage" />
-                                </h:selectOneMenu>
-                                <h:message id="braSizeMessage" for="braSizeField" />
+                                        <f:ajax event="blur" render="braSizeMessage" />
+                                    </h:selectOneMenu>
+                                    <h:message id="braSizeMessage" for="braSizeField" />
+                                </span>
                             </label>
                             <label>
-                                Waist Line Size:
-                                <h:inputText id="waistLineSizeField" value="#{Survey.waistLineSize}">
-                                    <f:validateRequired />
-                                    <f:validateLongRange />
+                                <span>Waist Line Size:</span>
+                                <span class="input-wrapper">
+                                    <h:inputText id="waistLineSizeField" value="#{Survey.waistLineSize}" label="Waist Line Size">
+                                        <f:validateRequired />
+                                        <f:validateLongRange />
 
-                                    <f:ajax event="blur" render="waistLineSizeMessage" />
-                                </h:inputText>
-                                <h:message id="waistLineSizeMessage" for="waistLineSizeField" />
+                                        <f:ajax event="blur" render="waistLineSizeMessage" />
+                                    </h:inputText>
+                                    <h:message id="waistLineSizeMessage" for="waistLineSizeField" />
+                                </span>
                             </label>
                             <label>
-                                Hips Size:
-                                <h:inputText id="hipsSizeField" value="#{Survey.hipsSize}">
-                                    <f:validateRequired />
-                                    <f:validateLongRange />
+                                <span>Hips Size:</span>
+                                <span class="input-wrapper">
+                                    <h:inputText id="hipsSizeField" value="#{Survey.hipsSize}" label="Hips Size">
+                                        <f:validateRequired />
+                                        <f:validateLongRange />
 
-                                    <f:ajax event="blur" render="hipsSizeMessage" />
-                                </h:inputText>
-                                <h:message id="hipsSizeMessage" for="hipsSizeField" />
+                                        <f:ajax event="blur" render="hipsSizeMessage" />
+                                    </h:inputText>
+                                    <h:message id="hipsSizeMessage" for="hipsSizeField" />
+                                </span>
                             </label>
                         </h:panelGroup>
 
                         <h:panelGroup layout="block" rendered="#{Survey.isMale}">
                             <label>
-                                Chest Size:
-                                <h:inputText id="chestSizeField" value="#{Survey.chestSize}">
-                                    <f:validateRequired />
-                                    <f:validateLongRange />
+                                <span>Chest Size:</span>
+                                <span class="input-wrapper">
+                                    <h:inputText id="chestSizeField" value="#{Survey.chestSize}" label="Chest Size">
+                                        <f:validateRequired />
+                                        <f:validateLongRange />
 
-                                    <f:ajax event="blur" render="chestSizeMessage" />
-                                </h:inputText>
-                                <h:message id="chestSizeMessage" for="chestSizeField" />
+                                        <f:ajax event="blur" render="chestSizeMessage" />
+                                    </h:inputText>
+                                    <h:message id="chestSizeMessage" for="chestSizeField" />
+                                </span>
                             </label>
                             <label>
-                                Waist Size:
-                                <h:inputText id="waistSizeField" value="#{Survey.waistSize}">
-                                    <f:validateRequired />
-                                    <f:validateLongRange />
+                                <span>Waist Size:</span>
+                                <span class="input-wrapper">
+                                    <h:inputText id="waistSizeField" value="#{Survey.waistSize}" label="Waist Size">
+                                        <f:validateRequired />
+                                        <f:validateLongRange />
 
-                                    <f:ajax event="blur" render="waistSizeMessage" />
-                                </h:inputText>
-                                <h:message id="waistSizeMessage" for="waistSizeField" />
+                                        <f:ajax event="blur" render="waistSizeMessage" />
+                                    </h:inputText>
+                                    <h:message id="waistSizeMessage" for="waistSizeField" />
+                                </span>
                             </label>
                         </h:panelGroup>
                     </h:panelGroup>
 
-                    <h:commandButton value="Submit" action="#{Survey.nextPage}">
-                        <f:ajax event="click" render="app" />
-                    </h:commandButton>
+                    <h:commandButton value="Submit" action="#{Survey.nextPage}" />
                 </h:form>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" rendered="#{Survey.page == 2}">
+            <h:panelGroup class="container" layout="block" rendered="#{Survey.page == 2}">
                 <h:form>
                     <label>
                         How much are you willing to spend on clothes per month?
-                        <h:selectOneMenu id="howMuchPerMonthField" value="#{Survey.howMuchPerMonth}">
-                            <f:selectItem itemValue="below100" itemLabel="Up to 100PLN" />
-                            <f:selectItem itemValue="100to500" itemLabel="100PLN - 500PLN" />
-                            <f:selectItem itemValue="500to1000" itemLabel="500PLN - 1000PLN" />
-                            <f:selectItem itemValue="above1000" itemLabel="More than 1000PLN" />
+                        <span class="input-wrapper">
+                            <h:selectOneMenu id="howMuchPerMonthField" value="#{Survey.howMuchPerMonth}">
+                                <f:selectItem itemValue="below100" itemLabel="Up to 100PLN" />
+                                <f:selectItem itemValue="100to500" itemLabel="100PLN - 500PLN" />
+                                <f:selectItem itemValue="500to1000" itemLabel="500PLN - 1000PLN" />
+                                <f:selectItem itemValue="above1000" itemLabel="More than 1000PLN" />
 
-                            <f:validateRequired />
+                                <f:validateRequired />
 
-                            <f:ajax event="blur" render="howMuchPerMonthMessage" />
-                        </h:selectOneMenu>
-                        <h:message id="howMuchPerMonthMessage" for="howMuchPerMonthField" />
+                                <f:ajax event="blur" render="howMuchPerMonthMessage" />
+                            </h:selectOneMenu>
+                            <h:message id="howMuchPerMonthMessage" for="howMuchPerMonthField" />
+                        </span>
                     </label>
                     <label>
                         How often do you buy clothes?
-                        <h:selectOneMenu id="howOftenField" value="#{Survey.howOften}">
-                            <f:selectItem itemValue="everyday" itemLabel="Everyday" />
-                            <f:selectItem itemValue="onceWeek" itemLabel="Once a week" />
-                            <f:selectItem itemValue="onceMonth" itemLabel="Once a month" />
-                            <f:selectItem itemValue="fewInYear" itemLabel="A few times a year" />
+                        <span class="input-wrapper">
+                            <h:selectOneMenu id="howOftenField" value="#{Survey.howOften}">
+                                <f:selectItem itemValue="everyday" itemLabel="Everyday" />
+                                <f:selectItem itemValue="onceWeek" itemLabel="Once a week" />
+                                <f:selectItem itemValue="onceMonth" itemLabel="Once a month" />
+                                <f:selectItem itemValue="fewInYear" itemLabel="A few times a year" />
 
-                            <f:validateRequired />
+                                <f:validateRequired />
 
-                            <f:ajax event="blur" render="howOftenMessage" />
-                        </h:selectOneMenu>
-                        <h:message id="howOftenMessage" for="howOftenField" />
+                                <f:ajax event="blur" render="howOftenMessage" />
+                            </h:selectOneMenu>
+                            <h:message id="howOftenMessage" for="howOftenField" />
+                        </span>
                     </label>
                     <label>
                         What colors of clothing do you usually choose?
-                        <h:selectManyMenu id="whatColorsField" value="#{Survey.whatColors}">
-                            <f:selectItem itemValue="colorful" itemLabel="Colorful or Light" />
-                            <f:selectItem itemValue="grey" itemLabel="Greys" />
-                            <f:selectItem itemValue="blackAndWhite" itemLabel="Black and white" />
-                            <f:selectItem itemValue="black" itemLabel="Only black" />
+                        <span class="input-wrapper">
+                            <h:selectManyMenu id="whatColorsField" value="#{Survey.whatColors}" label="Colors" class="w-100">
+                                <f:selectItem itemValue="colorful" itemLabel="Colorful or Light" />
+                                <f:selectItem itemValue="grey" itemLabel="Greys" />
+                                <f:selectItem itemValue="blackAndWhite" itemLabel="Black and white" />
+                                <f:selectItem itemValue="black" itemLabel="Only black" />
 
-                            <f:validateRequired />
+                                <f:validateRequired />
 
-                            <f:ajax event="blur" render="whatColorsMessage" />
-                        </h:selectManyMenu>
-                        <h:message id="whatColorsMessage" for="whatColorsField" />
+                                <f:ajax event="blur" render="whatColorsMessage" />
+                            </h:selectManyMenu>
+                            <h:message id="whatColorsMessage" for="whatColorsField" />
+                        </span>
                     </label>
                     <label>
                         What type of clothing do you most willingly buy?
-                        <h:selectManyMenu id="favouriteTypesField" value="#{Survey.favouriteTypes}">
-                            <f:selectItems value="#{Survey.availableClothingTypes}" var="type" itemLabel="#{type}" />
+                        <span class="input-wrapper">
+                            <h:selectManyMenu id="favouriteTypesField" value="#{Survey.favouriteTypes}" label="Types" class="w-100">
+                                <f:selectItems value="#{Survey.availableClothingTypes}" var="type" itemLabel="#{type}" />
 
-                            <f:validateRequired />
+                                <f:validateRequired />
 
-                            <f:ajax event="blur" render="favouriteTypesMessage" />
-                        </h:selectManyMenu>
-                        <h:message id="favouriteTypesMessage" for="favouriteTypesField" />
+                                <f:ajax event="blur" render="favouriteTypesMessage" />
+                            </h:selectManyMenu>
+                            <h:message id="favouriteTypesMessage" for="favouriteTypesField" />
+                        </span>
                     </label>
 
-                    <h:commandButton value="Finish" action="#{Survey.nextPage}">
-                        <f:ajax event="click" render="app" />
-                    </h:commandButton>
+                    <h:commandButton value="Summary" action="#{Survey.nextPage}" />
                 </h:form>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" rendered="#{Survey.page == 3}">
+            <h:panelGroup class="container" layout="block" rendered="#{Survey.page == 3}">
                 <h2>Your submission:</h2>
 
                 <div>Name: #{Survey.name}</div>
@@ -256,19 +355,47 @@
                     <div>Waist Size: #{Survey.waistSize}</div>
                 </h:panelGroup>
 
-                <div>How much are you willing to spend on clothes per month?: #{Survey.howMuchPerMonth}</div>
-                <div>How often do you buy clothes?: #{Survey.howOften}</div>
-                <div>What colors of clothing do you usually choose?: #{Survey.whatColors}</div>
-                <div>What type of clothing do you most willingly buy?: #{Survey.favouriteTypes}</div>
+                <div>
+                    How much are you willing to spend on clothes per month?
+                    <h:outputText value="Up to 100PLN" rendered="#{Survey.howMuchPerMonth eq 'below100'}" />
+                    <h:outputText value="100PLN - 500PLN" rendered="#{Survey.howMuchPerMonth eq '100to500'}" />
+                    <h:outputText value="500PLN - 1000PLN" rendered="#{Survey.howMuchPerMonth eq '500to1000'}" />
+                    <h:outputText value="More than 1000PLN" rendered="#{Survey.howMuchPerMonth eq 'above1000'}" />
+                </div>
+                <div>
+                    How often do you buy clothes?
+                    <h:outputText value="Everyday" rendered="#{Survey.howOften eq 'everyday'}" />
+                    <h:outputText value="Once a week" rendered="#{Survey.howOften eq 'onceWeek'}" />
+                    <h:outputText value="Once a month" rendered="#{Survey.howOften eq 'onceMonth'}" />
+                    <h:outputText value="A few times a year" rendered="#{Survey.howOften eq 'fewInYear'}" />
+                </div>
+                <div>
+                    What colors of clothing do you usually choose?
+                    <h:outputText value="Colorful or Light, " rendered="#{Survey.whatColors.contains('colorful')}"/>
+                    <h:outputText value="Greys, " rendered="#{Survey.whatColors.contains('grey')}"/>
+                    <h:outputText value="Black and white, " rendered="#{Survey.whatColors.contains('blackAndWhite')}"/>
+                    <h:outputText value="Only black" rendered="#{Survey.whatColors.contains('black')}"/>
+                </div>
+                <div>
+                    What type of clothing do you most willingly buy?
+                    <h:outputText value="Two-Piece Dresses, " rendered="#{Survey.favouriteTypes.contains('Two-Piece Dresses')}" />
+                    <h:outputText value="Blouses, " rendered="#{Survey.favouriteTypes.contains('Blouses')}" />
+                    <h:outputText value="Skirts, " rendered="#{Survey.favouriteTypes.contains('Skirts')}" />
+                    <h:outputText value="Trousers" rendered="#{Survey.favouriteTypes.contains('Trousers') and Survey.isFemale}" />
+
+                    <h:outputText value="Trousers, " rendered="#{Survey.favouriteTypes.contains('Trousers') and Survey.isMale}" />
+                    <h:outputText value="Shorts, " rendered="#{Survey.favouriteTypes.contains('Shorts')}" />
+                    <h:outputText value="Suits, " rendered="#{Survey.favouriteTypes.contains('Suits')}" />
+                    <h:outputText value="Shirts, " rendered="#{Survey.favouriteTypes.contains('Shirts')}" />
+                    <h:outputText value="Ties" rendered="#{Survey.favouriteTypes.contains('Ties')}" />
+                </div>
 
                 <h:form>
-                    <h:commandButton value="Accept" action="#{Survey.nextPage}">
-                        <f:ajax event="click" render="app" />
-                    </h:commandButton>
+                    <h:commandButton value="Accept" action="#{Survey.nextPage}" />
                 </h:form>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" rendered="#{Survey.page == 4}">
+            <h:panelGroup class="container" layout="block" rendered="#{Survey.page == 4}">
                 <h1>Thank you for your submission!</h1>
             </h:panelGroup>
         </h:panelGroup>
