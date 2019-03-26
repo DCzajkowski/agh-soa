@@ -83,13 +83,21 @@ public class BookManager {
         return getSelectedBooks().values().stream().filter(bool -> bool).count();
     }
 
-    public int getSelectedBooksPriceTotal() {
+    private int getSelectedBooksPriceTotal() {
         return getSelectedBooks()
             .entrySet()
             .stream()
             .filter(Map.Entry::getValue)
             .map(Map.Entry::getKey)
-            .mapToInt(id -> getBooks().stream().filter(book -> book.getId() == id).findFirst().orElse(null).getPriceInCurrency(Currency.PLN))
+            .mapToInt(id ->
+                Objects.requireNonNull(
+                    getBooks()
+                        .stream()
+                        .filter(book -> book.getId() == id)
+                        .findFirst()
+                        .orElse(null)
+                ).getPriceInCurrency(Currency.PLN)
+            )
             .sum();
     }
 
