@@ -87,7 +87,8 @@ public class BookManager {
         return getSelectedBooks()
             .entrySet()
             .stream()
-            .filter(Map.Entry::getValue).map(Map.Entry::getKey)
+            .filter(Map.Entry::getValue)
+            .map(Map.Entry::getKey)
             .mapToInt(id -> getBooks().stream().filter(book -> book.getId() == id).findFirst().orElse(null).getPriceInCurrency(Currency.PLN))
             .sum();
     }

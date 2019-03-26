@@ -41,7 +41,6 @@
                 <h:outputLabel for="displayedGenres">
                     Displayed categories:
                     <h:selectManyMenu id="displayedGenres" value="#{BookManager.displayedGenres}" style="height: 500px;">
-                        <!--<f:selectItem itemLabel="Select categories to be hidden" />-->
                         <f:selectItems value="#{BookManager.allGenres}" var="genre" itemLabel="#{genre}" />
 
                         <f:ajax event="change" render="booksTable" />
@@ -49,16 +48,12 @@
                 </h:outputLabel>
             </h:form>
 
-            <h:form id="booksTable">
-                <h:dataTable
-                    value="#{BookManager.books}"
-                    var="book"
-                >
+            <h:form>
+                <h:dataTable id="booksTable" value="#{BookManager.books}" var="book">
                     <h:column>
-                        <h:selectBooleanCheckbox value="#{BookManager.selectedBooks[book.id]}">
-                            <f:ajax event="change" render="summaryBookAmount summaryBookPriceTotal" />
-                        </h:selectBooleanCheckbox>
+                        <h:selectBooleanCheckbox value="#{BookManager.selectedBooks[book.id]}" />
                     </h:column>
+
                     <h:column>
                         <f:facet name="header">Title</f:facet>
                         <h:outputText value="#{book.title}" />
@@ -86,12 +81,14 @@
                         <h:outputText value="#{book.pages}" />
                     </h:column>
                 </h:dataTable>
+
+                <h:commandButton update="summary" value="Calculate Total" />
             </h:form>
 
-            <div>
-                Selected books amount: <h:outputText id="summaryBookAmount" value="#{BookManager.selectedBooksAmount}" />
-                Amount in PLN: <h:outputText id="summaryBookPriceTotal" value="#{BookManager.selectedBooksPriceTotalFormatted}" />
-            </div>
+            <h:panelGroup id="summary" layout="block">
+                <div>Selected books amount: <h:outputText value="#{BookManager.selectedBooksAmount}" /></div>
+                <div>Amount in PLN: <h:outputText value="#{BookManager.selectedBooksPriceTotalFormatted}" /></div>
+            </h:panelGroup>
         </div>
     </h:body>
 </html>
