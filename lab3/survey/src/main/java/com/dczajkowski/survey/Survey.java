@@ -180,7 +180,23 @@ public class Survey implements Serializable {
 
         if (page == 4) {
             System.out.print("Persist survey: ");
-            System.out.println(this);
+
+            System.out.printf("name: %s\n", name);
+            System.out.printf("email: %s\n", email);
+            System.out.printf("age: %s\n", age);
+            System.out.printf("sex: %s\n", sex);
+            System.out.printf("education: %s\n", education);
+            System.out.printf("height: %s\n", height);
+            System.out.printf("bustSize: %s\n", bustSize);
+            System.out.printf("braSize: %s\n", braSize);
+            System.out.printf("waistLineSize: %s\n", waistLineSize);
+            System.out.printf("hipsSize: %s\n", hipsSize);
+            System.out.printf("chestSize: %s\n", chestSize);
+            System.out.printf("waistSize: %s\n", waistSize);
+            System.out.printf("howMuchPerMonth: %s\n", howMuchPerMonth);
+            System.out.printf("howOften: %s\n", howOften);
+            System.out.printf("whatColors: %s\n", whatColors);
+            System.out.printf("favouriteTypes: %s\n", favouriteTypes);
         }
     }
 
