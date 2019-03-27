@@ -191,7 +191,9 @@
                     </h:column>
                 </h:dataTable>
 
-                <h:commandButton class="calculateTotal" update="summary" value="Calculate Total" />
+                <h:commandButton class="calculateTotal" update="summary" value="Calculate Total">
+                    <f:ajax event="click" render="summary" execute="@form" />
+                </h:commandButton>
             </h:form>
 
             <h:panelGroup id="summary" layout="block">
