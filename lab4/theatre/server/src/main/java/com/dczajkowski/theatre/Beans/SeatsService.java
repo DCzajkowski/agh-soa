@@ -1,7 +1,7 @@
 package com.dczajkowski.theatre.Beans;
 
-import com.dczajkowski.theatre.Contracts.LocalTheatreInterface;
-import com.dczajkowski.theatre.Contracts.TheatreInterface;
+import com.dczajkowski.theatre.Contracts.LocalSeatsServiceInterface;
+import com.dczajkowski.theatre.Contracts.SeatsServiceInterface;
 import com.dczajkowski.theatre.Exceptions.SeatDoesNotExistException;
 import com.dczajkowski.theatre.Exceptions.SeatUnavailableException;
 import com.dczajkowski.theatre.Models.Seat;
@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-@Remote(TheatreInterface.class)
-@Local(LocalTheatreInterface.class)
-public class Theatre implements TheatreInterface, LocalTheatreInterface {
+@Remote(SeatsServiceInterface.class)
+@Local(LocalSeatsServiceInterface.class)
+public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInterface {
     private List<Seat> seats = new ArrayList<>();
 
-    public Theatre() {
+    public SeatsService() {
         this.seats.add(new Seat(1, 1000));
         this.seats.add(new Seat(2, 1000));
         this.seats.add(new Seat(3, 2000));

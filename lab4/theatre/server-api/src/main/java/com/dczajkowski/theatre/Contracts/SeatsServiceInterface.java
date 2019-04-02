@@ -4,6 +4,6 @@ import com.dczajkowski.theatre.Models.Seat;
 
 import java.util.List;
 
-public interface TheatreInterface {
+public interface SeatsServiceInterface {
     List<Seat> getSeatList();
 }

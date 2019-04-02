@@ -8,11 +8,11 @@
     <h:head />
     <h:body>
         <h:panelGroup layout="block">
-            Your balance: <h:outputText value="#{IndexView.wallet}" />
+            Your balance: <h:outputText value="#{Theatre.wallet}" />
             <br />
-            <h:outputText id="error" value="#{IndexView.error}" />
+            <h:outputText id="error" value="#{Theatre.error}" />
         </h:panelGroup>
-        <h:dataTable value="#{IndexView.seats}" var="seat">
+        <h:dataTable value="#{Theatre.seats}" var="seat">
             <h:column>
                 <f:facet name="header">Seat Number</f:facet>
                 <h:outputText value="#{seat.number}" />
@@ -24,15 +24,15 @@
             <h:column>
                 <f:facet name="header">Availability</f:facet>
 
-                <h:outputText value="available" rendered="#{IndexView.isSeatAvailable(seat.number)}" />
-                <h:outputText value="taken" rendered="#{not IndexView.isSeatAvailable(seat.number)}" />
+                <h:outputText value="available" rendered="#{Theatre.isSeatAvailable(seat.number)}" />
+                <h:outputText value="taken" rendered="#{not Theatre.isSeatAvailable(seat.number)}" />
             </h:column>
             <h:column>
                 <h:form>
                     <h:commandButton
                         value="Buy this ticket"
                         rendered="#{seat.available}"
-                        action="#{IndexView.buy(seat.number)}"
+                        action="#{Theatre.buy(seat.number)}"
                     />
                 </h:form>
             </h:column>

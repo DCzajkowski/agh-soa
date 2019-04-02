@@ -4,7 +4,7 @@ import com.dczajkowski.theatre.Exceptions.SeatDoesNotExistException;
 import com.dczajkowski.theatre.Exceptions.SeatUnavailableException;
 import com.dczajkowski.theatre.Models.Seat;
 
-public interface LocalTheatreInterface {
+public interface LocalSeatsServiceInterface {
     Seat getSeatByNumber(int number) throws SeatDoesNotExistException;
 
     int getSeatPrice(int number) throws SeatDoesNotExistException;

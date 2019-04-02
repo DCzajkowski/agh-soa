@@ -1,8 +1,8 @@
 package com.dczajkowski.theatre.Views;
 
 import com.dczajkowski.theatre.Contracts.SeatAvailabilityServiceInterface;
-import com.dczajkowski.theatre.Contracts.TheatreInterface;
-import com.dczajkowski.theatre.Contracts.TicketBuyerInterface;
+import com.dczajkowski.theatre.Contracts.SeatsServiceInterface;
+import com.dczajkowski.theatre.Contracts.TicketsServiceInterface;
 import com.dczajkowski.theatre.Exceptions.NotEnoughFundsException;
 import com.dczajkowski.theatre.Exceptions.SeatDoesNotExistException;
 import com.dczajkowski.theatre.Exceptions.SeatUnavailableException;
@@ -14,22 +14,22 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@Named("IndexView")
+@Named("Theatre")
 @SessionScoped
-public class IndexView implements Serializable {
-    @EJB(lookup = "java:global/server/TicketBuyer")
-    private TicketBuyerInterface ticketBuyer;
+public class Theatre implements Serializable {
+    @EJB(lookup = "java:global/server/TicketsService")
+    private TicketsServiceInterface ticketsService;
 
     @EJB(lookup = "java:global/server/SeatAvailabilityService")
     private SeatAvailabilityServiceInterface seatAvailabilityService;
 
-    @EJB(lookup = "java:global/server/Theatre!com.dczajkowski.theatre.Contracts.TheatreInterface")
-    private TheatreInterface theatre;
+    @EJB(lookup = "java:global/server/SeatsService!com.dczajkowski.theatre.Contracts.SeatsServiceInterface")
+    private SeatsServiceInterface seatsService;
 
     private String error;
 
     public List<Seat> getSeats() {
-        return theatre.getSeatList();
+        return seatsService.getSeatList();
     }
 
     public boolean isSeatAvailable(int number) throws SeatDoesNotExistException {
@@ -38,7 +38,7 @@ public class IndexView implements Serializable {
 
     public void buy(int number) {
         try {
-            ticketBuyer.buyTicket(number);
+            ticketsService.buyTicket(number);
             error = null;
         } catch (NotEnoughFundsException | SeatDoesNotExistException | SeatUnavailableException e) {
             error = e.getMessage();
@@ -54,6 +54,6 @@ public class IndexView implements Serializable {
     }
 
     public int getWallet() {
-        return ticketBuyer.getWallet();
+        return ticketsService.getWallet();
     }
 }

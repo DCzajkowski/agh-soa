@@ -1,6 +1,6 @@
 package com.dczajkowski.theatre.Beans;
 
-import com.dczajkowski.theatre.Contracts.LocalTheatreInterface;
+import com.dczajkowski.theatre.Contracts.LocalSeatsServiceInterface;
 import com.dczajkowski.theatre.Contracts.SeatAvailabilityServiceInterface;
 import com.dczajkowski.theatre.Exceptions.SeatDoesNotExistException;
 
@@ -12,10 +12,10 @@ import javax.ejb.Stateless;
 @Remote(SeatAvailabilityServiceInterface.class)
 public class SeatAvailabilityService implements SeatAvailabilityServiceInterface {
     @EJB
-    private LocalTheatreInterface theatre;
+    private LocalSeatsServiceInterface seatsService;
 
     @Override
     public boolean isAvailable(int number) throws SeatDoesNotExistException {
-        return theatre.getSeatByNumber(number).isAvailable();
+        return seatsService.getSeatByNumber(number).isAvailable();
     }
 }
