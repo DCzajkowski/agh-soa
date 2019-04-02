@@ -4,3 +4,4 @@ out/
 *.jar
 *.war
 .gradle
+target/
