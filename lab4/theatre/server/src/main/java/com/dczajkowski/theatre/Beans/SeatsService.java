@@ -5,27 +5,21 @@ import com.dczajkowski.theatre.Contracts.SeatsServiceInterface;
 import com.dczajkowski.theatre.Exceptions.SeatDoesNotExistException;
 import com.dczajkowski.theatre.Exceptions.SeatUnavailableException;
 import com.dczajkowski.theatre.Models.Seat;
+import com.dczajkowski.theatre.Repositories.SeatsRepository;
 
 import javax.ejb.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
 @Remote(SeatsServiceInterface.class)
 @Local(LocalSeatsServiceInterface.class)
 public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInterface {
-    private List<Seat> seats = new ArrayList<>();
-
-    public SeatsService() {
-        this.seats.add(new Seat(1, 1000));
-        this.seats.add(new Seat(2, 1000));
-        this.seats.add(new Seat(3, 2000));
-        this.seats.add(new Seat(4, 2000));
-    }
+    @EJB
+    private SeatsRepository seatsRepository;
 
     @Override
     public List<Seat> getSeatList() {
-        return seats;
+        return seatsRepository.getSeats();
     }
 
     public int getSeatPrice(int number) throws SeatDoesNotExistException {
@@ -50,7 +44,7 @@ public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInt
     }
 
     public Seat getSeatByNumber(int number) throws SeatDoesNotExistException {
-        Seat seat = seats.stream().filter(s -> s.getNumber() == number).findFirst().orElse(null);
+        Seat seat = seatsRepository.getSeatByNumber(number);
 
         if (seat == null) {
             throw new SeatDoesNotExistException(String.format("Seat with number %d does not exist", number));
