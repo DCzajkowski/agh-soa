@@ -39,6 +39,7 @@ public class IndexView implements Serializable {
     public void buy(int number) {
         try {
             ticketBuyer.buyTicket(number);
+            error = null;
         } catch (NotEnoughFundsException | SeatDoesNotExistException | SeatUnavailableException e) {
             error = e.getMessage();
         }
