@@ -23,7 +23,7 @@ public class TicketsService implements TicketsServiceInterface {
         int price = seatsService.getSeatPrice(number);
 
         if (price > wallet) {
-            throw new NotEnoughFundsException(String.format("Seat #%d costs %d, but user's wallet has only %d in funds.", number, price, wallet));
+            throw new NotEnoughFundsException(number, price, wallet);
         }
 
         seatsService.buyTicket(number);

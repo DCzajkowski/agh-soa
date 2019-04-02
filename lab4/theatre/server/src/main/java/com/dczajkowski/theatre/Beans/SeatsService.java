@@ -37,7 +37,7 @@ public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInt
     @Lock
     private void buyTicket(Seat seat) throws SeatUnavailableException {
         if (!seat.isAvailable()) {
-            throw new SeatUnavailableException(String.format("Seat #%d is unavailable.", seat.getNumber()));
+            throw new SeatUnavailableException(seat.getNumber());
         }
 
         seat.setAvailable(false);
@@ -47,7 +47,7 @@ public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInt
         Seat seat = seatsRepository.getSeatByNumber(number);
 
         if (seat == null) {
-            throw new SeatDoesNotExistException(String.format("Seat with number %d does not exist", number));
+            throw new SeatDoesNotExistException(number);
         }
 
         return seat;
