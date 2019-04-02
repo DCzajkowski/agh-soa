@@ -8,14 +8,12 @@ import java.util.List;
 
 @Singleton
 public class SeatsRepository {
-    private List<Seat> seats = new ArrayList<>();
-
-    public SeatsRepository() {
-        this.seats.add(new Seat(1, 1000));
-        this.seats.add(new Seat(2, 1000));
-        this.seats.add(new Seat(3, 2000));
-        this.seats.add(new Seat(4, 2000));
-    }
+    private List<Seat> seats = new ArrayList<>(List.of(
+        new Seat(1, 1000),
+        new Seat(2, 1000),
+        new Seat(3, 2000),
+        new Seat(4, 2000)
+    ));
 
     public List<Seat> getSeats() {
         return seats;
