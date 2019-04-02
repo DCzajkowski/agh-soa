@@ -32,7 +32,7 @@ public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInt
         return getSeatPrice(getSeatByNumber(number));
     }
 
-    public int getSeatPrice(Seat seat) {
+    private int getSeatPrice(Seat seat) {
         return seat.getPrice();
     }
 
@@ -41,7 +41,7 @@ public class SeatsService implements SeatsServiceInterface, LocalSeatsServiceInt
     }
 
     @Lock
-    public void buyTicket(Seat seat) throws SeatUnavailableException {
+    private void buyTicket(Seat seat) throws SeatUnavailableException {
         if (!seat.isAvailable()) {
             throw new SeatUnavailableException(String.format("Seat #%d is unavailable.", seat.getNumber()));
         }
