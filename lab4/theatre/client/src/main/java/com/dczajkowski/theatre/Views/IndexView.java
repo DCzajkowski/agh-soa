@@ -37,8 +37,6 @@ public class IndexView implements Serializable {
     }
 
     public void buy(int number) {
-        System.out.println(number);
-
         try {
             ticketBuyer.buyTicket(number);
         } catch (NotEnoughFundsException | SeatDoesNotExistException | SeatUnavailableException e) {
