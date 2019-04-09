@@ -102,31 +102,72 @@
         </style>
     </h:head>
     <h:body>
-        <div id="app">
+        <h:panelGroup layout="block" id="app">
+            <h:outputText value="#{BookManager.error}" rendered="#{not empty BookManager.error}" />
+
             <h:form id="booksTable">
                 <h:dataTable value="#{BookManager.books}" var="book">
                     <h:column>
                         <f:facet name="header">Title</f:facet>
-                        <h:outputText value="#{book.title}" />
+                        <h:inputText value="#{book.title}" />
                     </h:column>
                     <h:column>
                         <f:facet name="header">Author</f:facet>
-                        <h:outputText value="#{book.author}" />
+                        <h:inputText value="#{book.authorFirstName}" />
+                        <h:inputText value="#{book.authorLastName}" />
                     </h:column>
                     <h:column>
                         <f:facet name="header">ISBN</f:facet>
-                        <h:outputText value="#{book.isbn}" />
+                        <h:inputText value="#{book.isbn}" />
                     </h:column>
                     <h:column>
                         <f:facet name="header">Year of Publishing</f:facet>
-                        <h:outputText value="#{book.year}" />
+                        <h:inputText value="#{book.year}" />
                     </h:column>
                     <h:column>
                         <f:facet name="header">Price</f:facet>
-                        <h:outputText value="#{book.priceFormatted}" />
+                        <h:inputText value="#{book.priceFormatted}" />
+                    </h:column>
+                    <h:column>
+                        <h:commandButton value="save" action="#{BookManager.updateBook(book)}" />
+
+                        <h:commandButton value="delete" action="#{BookManager.deleteBook(book.id)}">
+                            <f:ajax event="click" render="app" />
+                        </h:commandButton>
                     </h:column>
                 </h:dataTable>
             </h:form>
-        </div>
+
+            <h:form id="addBook">
+                <h1>Add a New Book</h1>
+
+                <h:outputLabel>
+                    Title
+                    <h:inputText value="#{BookManager.title}" />
+                </h:outputLabel>
+                <h:outputLabel>
+                    Author's First Name
+                    <h:inputText value="#{BookManager.authorFirstName}" />
+                </h:outputLabel>
+                <h:outputLabel>
+                    Author's Last Name
+                    <h:inputText value="#{BookManager.authorLastName}" />
+                </h:outputLabel>
+                <h:outputLabel>
+                    ISBN
+                    <h:inputText value="#{BookManager.isbn}" />
+                </h:outputLabel>
+                <h:outputLabel>
+                    Year of Publishing
+                    <h:inputText value="#{BookManager.year}" />
+                </h:outputLabel>
+                <h:outputLabel>
+                    Price
+                    <h:inputText value="#{BookManager.price}" />
+                </h:outputLabel>
+
+                <h:commandButton value="Add" action="#{BookManager.addBook}" />
+            </h:form>
+        </h:panelGroup>
     </h:body>
 </html>

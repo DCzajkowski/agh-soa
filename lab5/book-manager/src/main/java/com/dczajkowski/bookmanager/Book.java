@@ -1,17 +1,34 @@
 package com.dczajkowski.bookmanager;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "books")
 public class Book implements Cloneable {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "author_first_name", nullable = false)
     private String authorFirstName;
+
+    @Column(name = "author_last_name", nullable = false)
     private String authorLastName;
+
+    @Column(name = "isbn", nullable = false)
     private String isbn;
-    private Genre genre;
+
+    @Column(name = "year", nullable = false)
     private int year;
+
+    @Column(name = "price", nullable = false)
     private int price;
 
-    public Book(int id, String title, String authorFirstName, String authorLastName, String isbn, int year, int price) {
-        this.id = id;
+    public Book(String title, String authorFirstName, String authorLastName, String isbn, int year, int price) {
         this.title = title;
         this.authorFirstName = authorFirstName;
         this.authorLastName = authorLastName;
@@ -21,22 +38,20 @@ public class Book implements Cloneable {
     }
 
     public Book(Book book) {
-        this.id = book.id;
         this.title = book.title;
         this.authorFirstName = book.authorFirstName;
         this.authorLastName = book.authorLastName;
         this.isbn = book.isbn;
-        this.genre = book.genre;
         this.year = book.year;
         this.price = book.price;
     }
 
-    public int getId() {
-        return id;
+    public Book() {
+        //
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -71,14 +86,6 @@ public class Book implements Cloneable {
         this.isbn = isbn;
     }
 
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-
     public int getYear() {
         return year;
     }
@@ -97,6 +104,10 @@ public class Book implements Cloneable {
 
     public String getPriceFormatted() {
         return String.format("%.2fPLN", (double) price / 100);
+    }
+
+    public void setPriceFormatted(String price) {
+        this.price = (int) (Float.parseFloat(price.substring(0, price.length() - 3)) * 100);
     }
 
     public String getAuthor() {
