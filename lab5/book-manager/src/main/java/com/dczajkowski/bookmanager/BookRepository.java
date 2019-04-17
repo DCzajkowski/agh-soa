@@ -13,7 +13,8 @@ public class BookRepository {
     private EntityManagerFactory factory;
     private EntityManager em;
 
-    public BookRepository() {
+    public BookRepository()
+    {
         factory = Persistence.createEntityManagerFactory("BookManager");
         em = factory.createEntityManager();
     }

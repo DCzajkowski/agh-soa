@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+>
+    <h:head />
+    <f:view>
+        Selected user:
+        <h:outputText id="selectedUser" value="#{''.concat(BooksManager.selectedUser.firstName).concat(' ').concat(BooksManager.selectedUser.lastName)}"/>
+        <br/>
+        Selected author:
+        <h:outputText id="selectedAuthor" value="#{''.concat(BooksManager.selectedAuthor.firstName).concat(' ').concat(BooksManager.selectedAuthor.lastName)}"/>
+        <br/>
+        Selected book:
+        <h:outputText id="selectedBook" value="#{BooksManager.selectedBook.title}"/>
+
+        <h:form>
+            <h:panelGroup id="searchBooksTable">
+                <h3>Books</h3>
+                <h:dataTable id="bookResults" value="#{BooksManager.getBooks()}" var="book">
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                        <h:inputText value="#{book.title}">
+                            <f:ajax event="blur" render="@all"/>
+                        </h:inputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Author</f:facet>
+                        <h:outputText value="#{''.concat(book.author.firstName).concat(' ').concat(book.author.lastName)}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Remove</f:facet>
+                        <h:commandButton
+                            rendered="#{not book.hasLoans()}"
+                            action="#{BooksManager.removeBook(book)}"
+                            value="remove"
+                        >
+                            <f:ajax event="click" render="@all selectedBook" />
+                        </h:commandButton>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Select</f:facet>
+                        <h:commandButton
+                            action="#{BooksManager.setSelectedBook(book)}"
+                            value="select"
+                        >
+                            <f:ajax event="click" render="@all selectedBook" />
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <h:commandButton rendered="#{BooksManager.selectedAuthor != null}" action="#{BooksManager.addBook()}" value="add">
+                <f:ajax event="click" render="@all selectedAuthor" />
+            </h:commandButton>
+        </h:form>
+        <h:form>
+            <h:panelGroup id="searchUsersTable">
+                <h3>Users</h3>
+                <h:dataTable id="userResults" value="#{BooksManager.getUsers()}" var="user">
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:inputText value="#{user.firstName}">
+                            <f:ajax event="blur" render="@all"/>
+                        </h:inputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Surname</f:facet>
+                        <h:inputText value="#{user.lastName}">
+                            <f:ajax event="blur" render="@all"/>
+                        </h:inputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Remove</f:facet>
+                        <h:commandButton rendered="#{not user.hasLoans()}" action="#{BooksManager.removeUser(user)}" value="remove">
+                            <f:ajax event="click" render="@all selectedUser" />
+                        </h:commandButton>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Select</f:facet>
+                        <h:commandButton action="#{BooksManager.setSelectedUser(user)}" value="select">
+                            <f:ajax event="click" render="@all selectedUser" />
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <h:commandButton action="#{BooksManager.addUser()}" value="add">
+                <f:ajax event="click" render="@all" />
+            </h:commandButton>
+        </h:form>
+        <h:form>
+            <h:panelGroup id="searchAuthorsTable">
+                <h3>Authors</h3>
+                <h:dataTable id="authorResults" value="#{BooksManager.getAuthors()}" var="author">
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:inputText value="#{author.firstName}">
+                            <f:ajax event="blur" render="@all"/>
+                        </h:inputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Surname</f:facet>
+                        <h:inputText value="#{author.lastName}">
+                            <f:ajax event="blur" render="@all"/>
+                        </h:inputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Remove</f:facet>
+                        <h:commandButton
+                                rendered="#{not author.hasBooks()}"
+                                action="#{BooksManager.removeAuthor(author)}"
+                                value="remove"
+                        >
+                            <f:ajax event="click" render="@all selectedAuthor" />
+                        </h:commandButton>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Select</f:facet>
+                        <h:commandButton
+                                action="#{BooksManager.setSelectedAuthor(author)}"
+                                value="select"
+                        >
+                            <f:ajax event="click" render="@all selectedAuthor" />
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <h:commandButton action="#{BooksManager.addAuthor()}" value="add">
+                <f:ajax event="click" render="@all" />
+            </h:commandButton>
+        </h:form>
+        <h:form>
+            <h:panelGroup id="searchLoansTable">
+                <h3>Loans</h3>
+                <h:dataTable id="loanResults" value="#{BooksManager.getLoans()}" var="loan">
+                    <h:column>
+                        <f:facet name="header">User</f:facet>
+                        <h:outputText value="#{''.concat(loan.user.firstName).concat(' ').concat(loan.user.lastName)}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{loan.book.title}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Borrowed</f:facet>
+                        <h:outputText value="#{loan.borrowed_at}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Returned</f:facet>
+                        <h:outputText value="#{loan.returned_at}" />
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Remove</f:facet>
+                        <h:commandButton
+                            action="#{BooksManager.removeLoan(loan)}"
+                            value="remove"
+                        >
+                            <f:ajax event="click" render="@all" />
+                        </h:commandButton>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Return</f:facet>
+                        <h:commandButton
+                            action="#{BooksManager.endLoan(loan)}"
+                            rendered="#{loan.returned_at == null}"
+                            value="return"
+                        >
+                            <f:ajax event="click" render="@all" />
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:panelGroup>
+            <h:commandButton
+                rendered="#{BooksManager.selectedUser != null and BooksManager.selectedBook != null}"
+                action="#{BooksManager.addLoan()}"
+                value="add"
+            >
+                <f:ajax event="click" render="@all" />
+            </h:commandButton>
+        </h:form>
+
+        <h:form>
+            <div>
+                <div>
+                    <h:inputText value="#{BooksManager.queryHandler.authorFirstName}" a:placeholder="Authors first name">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.authorLastName}" a:placeholder="Authors last name">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.title}" a:placeholder="Book title">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.loanDateFrom}" a:placeholder="Borrowed after">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.loanDateTo}" a:placeholder="Borrowed before">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.returnDateFrom}" a:placeholder="Returned after">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.returnDateTo}" a:placeholder="Returned before">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.userFirstName}" a:placeholder="Users first name">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:inputText value="#{BooksManager.queryHandler.userLastName}" a:placeholder="Users last name">
+                        <f:ajax event="blur"/>
+                    </h:inputText>
+
+                    <h:commandButton action="#{BooksManager.queryHandler.performQuery()}" value="search">
+                        <f:ajax event="click" render="@form" />
+                    </h:commandButton>
+                </div>
+                <h:panelGroup>
+                    <h:dataTable value="#{BooksManager.queryHandler.result}" var="row">
+                        <h:column>
+                            <f:facet name="header">User Name</f:facet>
+                            <h:outputText value="#{row[0].firstName}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">User Surname</f:facet>
+                            <h:outputText value="#{row[0].lastName}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Borrowed at</f:facet>
+                            <h:outputText value="#{row[3].borrowed_at}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Returned at</f:facet>
+                            <h:outputText value="#{row[3].returned_at}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Title</f:facet>
+                            <h:outputText value="#{row[2].title}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Author Name</f:facet>
+                            <h:outputText value="#{row[1].firstName}" />
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">Author Surname</f:facet>
+                            <h:outputText value="#{row[1].lastName}" />
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </div>
+        </h:form>
+    </f:view>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
+    <persistence-unit name="BookManager">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <jta-data-source>java:/PostgresDS</jta-data-source>
+        <class>com.dczajkowski.library.Models.Book</class>
+        <class>com.dczajkowski.library.Models.User</class>
+        <class>com.dczajkowski.library.Models.Author</class>
+        <class>com.dczajkowski.library.Models.Loan</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost/bookmanager" />
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+            <property name="hibernate.connection.username" value="bookmanager" />
+            <property name="hibernate.connection.password" value="bookmanager" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.archive.autodetection" value="class" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hbm2ddl.auto" value="create-drop" />
+        </properties>
+    </persistence-unit>
+</persistence>
