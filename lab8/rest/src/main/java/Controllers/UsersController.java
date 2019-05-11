@@ -1,14 +1,24 @@
 package Controllers;
 
+import Repositories.UsersRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 @Path("/users")
 public class UsersController {
+    @Inject
+    private UsersRepository usersRepository;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     @GET
-    @Produces("text/plain")
-    public String index() {
-        return "users";
+    @Produces("application/json")
+    public String index() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(usersRepository.get());
     }
 }
