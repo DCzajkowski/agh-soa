@@ -5,6 +5,7 @@ import com.dczajkowski.rest.Repositories.MoviesRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.activation.MimeType;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -35,6 +36,15 @@ public class MoviesController {
     @Produces("text/uri-list")
     public String indexUris(@QueryParam("title") String title) throws JsonProcessingException {
         return objectMapper.writeValueAsString(getMovies(title).stream().map(Movie::getUrl).collect(Collectors.toList()));
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String indexText(@QueryParam("title") String title) {
+        return getMovies(title)
+            .stream()
+            .map(movie -> "\"" + movie.getTitle() + "\"\n" + movie.getUrl() + "\n")
+            .reduce("", (String acc, String movie) -> acc + movie + "\n");
     }
 
     @GET
