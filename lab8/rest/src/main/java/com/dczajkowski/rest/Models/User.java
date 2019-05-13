@@ -3,6 +3,7 @@ package com.dczajkowski.rest.Models;
 import com.fasterxml.jackson.annotation.JsonGetter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id")
     )
-    private List<Movie> favouriteMovies;
+    private List<Movie> favouriteMovies = new ArrayList<>();
 
     @JsonGetter("id")
     public int getId() {
