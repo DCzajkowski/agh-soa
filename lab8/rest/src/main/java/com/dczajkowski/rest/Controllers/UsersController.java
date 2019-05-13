@@ -1,6 +1,6 @@
-package Controllers;
+package com.dczajkowski.rest.Controllers;
 
-import Repositories.UsersRepository;
+import com.dczajkowski.rest.Repositories.UsersRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

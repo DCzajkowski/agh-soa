@@ -1,15 +1,34 @@
-package Models;
+package com.dczajkowski.rest.Models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "age", nullable = false)
     private int age;
+
+    @Column(name = "avatar", nullable = false)
     private String avatar;
-    private List<Movie> movies;
+
+    @ManyToMany
+    @JoinTable(
+        name = "users_movies",
+        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "movie_id", referencedColumnName = "id")
+    )
+    private List<Movie> favouriteMovies;
 
     @JsonGetter("id")
     public int getId() {
@@ -48,11 +67,11 @@ public class User {
     }
 
     @JsonGetter("movies")
-    public List<Movie> getMovies() {
-        return movies;
+    public List<Movie> getFavouriteMovies() {
+        return favouriteMovies;
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setFavouriteMovies(List<Movie> favouriteMovies) {
+        this.favouriteMovies = favouriteMovies;
     }
 }

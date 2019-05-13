@@ -1,10 +1,21 @@
-package Models;
+package com.dczajkowski.rest.Models;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "movies")
 public class Movie {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
     private int id;
+
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "url", nullable = false)
     private String url;
 
     @JsonGetter("id")
