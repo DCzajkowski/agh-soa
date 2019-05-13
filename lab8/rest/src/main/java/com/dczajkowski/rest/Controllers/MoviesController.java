@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("movies")
 public class MoviesController {
@@ -17,14 +19,22 @@ public class MoviesController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    private List<Movie> getMovies(String title) {
+        return (title != null && !title.isEmpty())
+            ? moviesRepository.getByTitle(title)
+            : moviesRepository.get();
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String index(@QueryParam("title") String title) throws JsonProcessingException {
-        if (title != null && !title.isEmpty()) {
-            return objectMapper.writeValueAsString(moviesRepository.getByTitle(title));
-        }
+    public String indexJson(@QueryParam("title") String title) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(getMovies(title));
+    }
 
-        return objectMapper.writeValueAsString(moviesRepository.get());
+    @GET
+    @Produces("text/uri-list")
+    public String indexUris(@QueryParam("title") String title) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(getMovies(title).stream().map(Movie::getUrl).collect(Collectors.toList()));
     }
 
     @GET
