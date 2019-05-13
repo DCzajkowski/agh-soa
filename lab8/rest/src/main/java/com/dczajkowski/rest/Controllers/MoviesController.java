@@ -19,7 +19,11 @@ public class MoviesController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String index() throws JsonProcessingException {
+    public String index(@QueryParam("title") String title) throws JsonProcessingException {
+        if (title != null && !title.isEmpty()) {
+            return objectMapper.writeValueAsString(moviesRepository.getByTitle(title));
+        }
+
         return objectMapper.writeValueAsString(moviesRepository.get());
     }
 

@@ -11,6 +11,12 @@ public class MoviesRepository extends Repository {
         return em.createQuery("SELECT m FROM Movie m").getResultList();
     }
 
+    public List<Movie> getByTitle(String title) {
+        return em.createQuery("SELECT m FROM Movie m WHERE m.title = :title")
+            .setParameter("title", title)
+            .getResultList();
+    }
+
     public void create(Movie movie) {
         update(movie);
     }
