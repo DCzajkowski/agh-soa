@@ -22,9 +22,9 @@ public class UsersRepository extends Repository {
         em.clear();
     }
 
-    public boolean remove(int user_id) {
+    public boolean remove(int id) {
         em.getTransaction().begin();
-        int status = em.createQuery("DELETE FROM User u where u.id = :id").setParameter("id", user_id).executeUpdate();
+        int status = em.createQuery("DELETE FROM User u where u.id = :id").setParameter("id", id).executeUpdate();
         em.getTransaction().commit();
         em.clear();
 
